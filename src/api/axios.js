@@ -2,10 +2,10 @@ import axios from "axios";
 import { store } from "../redux/store";
 import { setAccessToken, setLogout } from "../redux/slices/authSlice";
 import { setUser } from "../redux/slices/userSlice";
-const domain = import.meta.env.VITE_DOMAIN;
+const api_url = import.meta.env.VITE_API_URL;
 
 const axiosInstance = axios.create({
-  baseURL: domain,
+  baseURL: api_url,
   withCredentials: true, // Important for cookies
 });
 
