@@ -1,0 +1,48 @@
+.header-containter {
+    background-color: #0F172A;
+
+}
+
+.row {
+
+    background-color: #0F172A;
+
+
+    .tab-link {
+        padding: 0.5rem 0;
+        text-decoration: none;
+        color: white;
+        border: none;
+        flex: 1;
+        text-align: center;
+    }
+
+    .tab-link.active {
+        border: 2px solid #2a4075;
+        border-radius: 5px;
+        background-color: #1a2849;
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+        z-index: 2;
+        position: relative;
+    }
+
+    .btn-group {
+        .btn {
+            color: white;
+            margin: 0px 10px;
+            max-width: 150px;
+        }
+    }
+
+    .user-info {
+        color: white;
+        gap: 20px;
+
+        img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+
+    }
+}
