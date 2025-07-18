@@ -1,10 +1,10 @@
 // socket.js
-import { io } from 'socket.io-client';
-const domain = import.meta.env.VITE_DOMAIN;
+import { io } from "socket.io-client";
+const api_url = import.meta.env.VITE_URL;
 const socket = io(domain, {
-    withCredentials: true,
-    autoConnect: true,
-    transports: ['websocket']
+  withCredentials: true,
+  autoConnect: true,
+  transports: ["websocket"],
 });
 window.socket = socket;
 

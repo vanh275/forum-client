@@ -15,14 +15,8 @@ const Home = () => {
             <img src={homeBanner} className="banner-img" />
             <div className="banner-text">
               <h2 className="display-4 fw-bold">Diễn đàn Tài Chính</h2>
-              <p className="lead">
-                Nơi kết nối nhà đầu tư, chia sẻ kiến thức và cập nhật xu hướng
-                mới nhất.
-              </p>
-              <Link
-                to="/forum"
-                className="btn btn-warning btn-lg mt-3 text-white"
-              >
+              <p className="lead">Nơi kết nối nhà đầu tư, chia sẻ kiến thức và cập nhật xu hướng mới nhất.</p>
+              <Link to="/forum" className="btn btn-warning btn-lg mt-3 text-white">
                 Khám phá ngay
               </Link>
             </div>
@@ -34,21 +28,11 @@ const Home = () => {
           <div className="news">
             <NewsCarousel />
           </div>
-          <hr
-            className="mx-auto mt-5"
-            style={{
-              color: "white",
-              backgroundColor: "white",
-              height: "3px",
-              border: "none",
-              width: "80%",
-            }}
-          />
+          <hr className="mx-auto mt-5" style={{ color: "white", backgroundColor: "white", height: "3px", border: "none", width: "80%" }} />
           <div className="expert-view">
             <ExpertViewSection />
           </div>
         </div>
-        <div></div>
       </div>
     </div>
   );
