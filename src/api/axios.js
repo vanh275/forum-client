@@ -2,46 +2,55 @@ import axios from "axios";
 import { store } from "../redux/store";
 import { setAccessToken, setLogout } from "../redux/slices/authSlice";
 import { setUser } from "../redux/slices/userSlice";
+
 const api_url = import.meta.env.VITE_API_URL;
 
-const axiosInstance = axios.create({
+// Instance cho request bình thường
+const axiosAuth = axios.create({
   baseURL: api_url,
-  withCredentials: true, // Important for cookies
+  withCredentials: true,
 });
 
-let isRefreshing = false;
+// Instance chuyên cho refresh token
+const axiosRefresh = axios.create({
+  baseURL: api_url,
+  withCredentials: true,
+});
 
-axiosInstance.interceptors.request.use(
+// Interceptor cho axiosAuth
+axiosAuth.interceptors.request.use(
   (config) => {
     const token =
       store.getState().auth?.access_token ||
-      localStorage.getItem("access_token"); // đề phòng token chưa có trong redux
+      localStorage.getItem("access_token");
 
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`; // đính access_token vào header
+      config.headers.Authorization = `Bearer ${token}`;
     }
 
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
-// Add a request interceptor
-axiosInstance.interceptors.response.use(
+
+let isRefreshing = false;
+
+axiosAuth.interceptors.response.use(
   (res) => res,
   async (error) => {
     const originalRequest = error.config;
+
     if (
       (error.response?.status === 401 || error.response?.status === 403) &&
       !originalRequest._retry
     ) {
       if (isRefreshing) return Promise.reject(error);
+
       isRefreshing = true;
       originalRequest._retry = true;
 
       try {
-        const res = await axiosInstance.post("/refresh-token");
+        const res = await axiosRefresh.post("/refresh-token");
         const { access_token, user } = res.data.DT;
 
         store.dispatch(setAccessToken(access_token));
@@ -50,14 +59,13 @@ axiosInstance.interceptors.response.use(
 
         originalRequest.headers.Authorization = `Bearer ${access_token}`;
         isRefreshing = false;
-        return axiosInstance(originalRequest);
+
+        return axiosAuth(originalRequest);
       } catch (err) {
         store.dispatch(setLogout());
         store.dispatch(setUser(null));
         localStorage.removeItem("access_token");
-
         isRefreshing = false;
-        window.location.href = "/";
         return Promise.reject(err);
       }
     }
@@ -66,4 +74,4 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-export default axiosInstance;
+export default axiosAuth;
